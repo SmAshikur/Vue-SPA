@@ -11,7 +11,7 @@
                            <div class="card-body">
                         <div class="row">
                             <div class="col-6 offset-3">
-                                <form @submit.prevent="createProduct">
+                                <form @submit.prevent="saveProduct">
                                     <div class="form-group">
                                         <label for="">Product Title</label>
                                         <input type="text" v-model="productForm.title" class="form-control" name="title" placeholder="product name"
@@ -25,16 +25,25 @@
                                         <has-error :form="productForm" field="price"></has-error>
                                     </div>
                                     <div class="form-group">
-                                        <label for="">product Price</label>
-                                        <input type="file"  class="form-control-file" name="image" placeholder="product image"
-                                        :class="{ 'is-invalid': productForm.errors.has('image') }">
-                                        <has-error :form="productForm" field="image"></has-error>
+                                       <div class="row">
+                                            <div class="col-8">
+                                                    <label for="">product Image</label>
+                                            <input type="file"  class="form-control-file" name="image" placeholder="product image"
+                                            @change="onImageChange" :class="{ 'is-invalid': productForm.errors.has('image') }">
+                                            <has-error :form="productForm" field="image"></has-error>
+                                            </div>
+                                            <div class="col-4">
+                                                <div style="width: 100%; max-height: 150px; overflow:hidden">
+                                                    <img :src="image" alt="" class="img-fluid">
+                                                </div>
+                                            </div>
+                                       </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="">product name</label>
-                                        <textarea type="text" v-model="productForm.description" class="form-control" name="desription" placeholder="product name"
-                                         :class="{ 'is-invalid': productForm.errors.has('desription') }" rows="3"></textarea>
-                                        <has-error :form="productForm" field="desription"></has-error>
+                                        <textarea type="text" v-model="productForm.description" class="form-control" name="description" placeholder="product name"
+                                         :class="{ 'is-invalid': productForm.errors.has('description') }" rows="3"></textarea>
+                                        <has-error :form="productForm" field="desrciption"></has-error>
                                     </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-success">Create product</button>
@@ -51,36 +60,61 @@
 
 <script>
     import { Form } from 'vform'
+    import { objectToFormData } from 'object-to-formdata'
     export default {
         data(){
             return {
-                productForm: new Form({
-                    title: '',
-                    price: '',
-                    image: '',
-                    description: '',
-                }),
+               productForm: new Form({
+                title: '',
+                price: '',
+                image: '',
+                description: '',
+                _method: 'put',
+            }),
+            image: '',
+
             }
         },
         methods: {
-            updateProduct(){
-                let id = this.$route.params.id;
-                this.categoryForm.patch(`/api/product/${id}`).then(() => {
-                    this.$toast.success({
-                        title:'Success!',
-                       message:'Category update successfully.'
-                    })
-                })
+            loadProduct(){
+              let id = this.$route.params.id;
+
+            axios.get(`/api/product/${id}/edit`).then(response => {
+                let product = response.data;
+                this.productForm.title = product.title;
+                this.productForm.price = product.price;
+                this.productForm.description = product.description;
+                this.image =product.image;
+            });
             },
-            loadCategory(){
-                let id = this.$route.params.id;
-                axios.get(`/api/product/${id}/edit`).then(response => {
-                    this.productForm.title = response.data.title;
+
+        saveProduct(){
+            let id = this.$route.params.id;
+            this.productForm.post('/api/product/'+id, {
+                transformRequest: [function (data, headers) {
+                    return objectToFormData(data)
+                }],
+                onUploadProgress: e => {
+                    // Do whatever you want with the progress event
+                    console.log(e)
+                }
+            }).then(({ data }) => {
+                this.image = data.image;
+               // console.log(data)
+                this.$toast.success({
+                    title:'Success!',
+                    message:'Product saved successfully.'
                 });
-            }
+            })
+        },
+        onImageChange(e){
+            const file = e.target.files[0]
+            // Do some client side validation...
+            this.productForm.image = file
+        },
         },
          mounted(){
-            this.loadCategory
+            this.loadProduct();
         }
     }
 </script>

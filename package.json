@@ -26,6 +26,7 @@
     },
     "dependencies": {
         "cxlt-vue2-toastr": "^1.1.1",
+        "object-to-formdata": "^3.0.1",
         "vform": "^1.0.1",
         "vue-router": "^3.5.3",
         "watch": "^1.0.2"

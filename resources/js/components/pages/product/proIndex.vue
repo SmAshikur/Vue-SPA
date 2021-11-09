@@ -14,6 +14,7 @@
                                 <tr>
                                     <th style="width:100px">Id</th>
                                     <th>Product Name</th>
+                                    <th>Product Name</th>
                                     <th>Product Slug</th>
                                     <th style="width:200px">Action</th>
                                 </tr>
@@ -21,11 +22,16 @@
                             <tbody>
                             <tr v-for=" product in pro" :key="product.id">
                                     <td style="width:100px">{{product.id}}</td>
+                                    <td>
+                                        <div style="max-width: 150px; max-height: 150px">
+                                            <img :src="product.image" class="img-fluid">
+                                        </div>
+                                    </td>
                                     <td>{{product.title}}</td>
                                     <td>{{product.slug}}</td>
                                 <td style="width:200px">
                                   <router-link :to="{name: 'proEdit', params: {id: product.id}}" class="btn btn-primary btn-sm">Edit</router-link>
-                                    <a  @click.prevent="deleteCategory(productcategory)" class="btn btn-danger" > Delete </a>
+                                    <a  @click.prevent="deleteProduct(product)" class="btn btn-danger" > Delete </a>
                                 </td>
                             </tr>
                             </tbody>
@@ -51,6 +57,16 @@
                         this.pro=response.data;
                     })
                 },
+                 async deleteProduct(product){
+            await axios.delete(`/api/product/${product.id}`).then(() => {
+                this.$toast.success({
+                    title:'Success!',
+                    message:'Product deleted successfully.'
+                });
+            });
+            let index = this.pro.indexOf(product);
+            this.pro.splice(index, 1);
+        }
 
         },
         mounted() {
