@@ -56,23 +56,27 @@ import axios from 'axios';
             createCategory(){
                 axios.get('/sanctum/csrf-cookie').then(response => {
                     this.categoryForm.post('/login').then(response =>{
-                        this.$router.push({name: 'dashboard'});
+                        this.getdata();
                          this.$toast.success({
                         title:'Success!',
                        message:'Log in successfully.'
-                    })
+                    });
+                    this.$router.push({name: 'dashboard'});
                     })
                 });
             },
             getdata(){
                 axios.get('/api/user').then(response =>{
-                    console.log(response.data)
+                       let user = response.data;
+                        this.$store.commit('SET_USER', user);
+                        this.$store.commit('SET_AUTHENTICATED', true);
+                        localStorage.setItem("auth", true);
                 })
             }
 
         },
         mounted() {
-            this.getdata();
+
         },
     }
 </script>

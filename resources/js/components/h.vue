@@ -9,7 +9,7 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav ml-auto"  v-if="auth">
                     <li class="nav-item active">
                         <router-link class="nav-link" :to="{name:'home'}">Home </router-link>
                     </li>
@@ -19,11 +19,19 @@
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'proIn'}">Product </router-link>
                     </li>
-                     <li class="nav-item">
-                        <router-link class="nav-link" :to="{name:'login'}">Log In </router-link>
+                    <li class="nav-item">
+                        <router-link class="nav-link" :to="{name:'dashboard'}">Dashboard </router-link>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link" @click.prevent="logout()">Log out </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto"  v-else >
+                    <li class="nav-item active">
+                        <router-link class="nav-link" :to="{name:'home'}">Home </router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" :to="{name:'login'}">Log In </router-link>
                     </li>
                 </ul>
 
@@ -37,14 +45,25 @@
         methods: {
             logout(){
                 axios.post('/logout').then(response =>{
-                    this.$router.push({name: 'login'});
+                   // this.$router.push({name: 'login'});
                      this.$toast.success({
                         title:'Success!',
                        message:'Log out successfully.'
-                    })
+                    });
+                     localStorage.removeItem("auth");
+                this.$store.commit('SET_AUTHENTICATED', false);
+                this.$router.push({ name: 'login' });
                 })
             }
         },
+        computed: {
+             user() {
+            return this.$store.getters.getUser;
+            },
+            auth(){
+             return this.$store.getters.getAuthenticated;
+            }
+         }
     }
 </script>
 

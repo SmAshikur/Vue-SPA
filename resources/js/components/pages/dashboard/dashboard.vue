@@ -6,6 +6,11 @@
                     This is Dashboard
                 </h2>
             </div>
+            <div class="card-body">
+            <h5>
+                welcome {{user.name}}
+            </h5>
+            </div>
         </div>
 
     </div>
@@ -28,6 +33,11 @@ export default {
     methods: {
 
     },
+    computed:{
+         user() {
+            return this.$store.getters.getUser;
+        }
+    }
 };
 </script>
 
