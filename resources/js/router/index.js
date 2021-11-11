@@ -10,8 +10,8 @@ import editCat from '../components/pages/category/editCat';
 import proIndex from '../components/pages/product/proIndex';
 import proCreate from '../components/pages/product/proCreate';
 import proEdit from '../components/pages/product/proEdit';
-import login from '../components/pages/auth/login/login';
 import dashboard from '../components/pages/dashboard/dashboard';
+import Login from '../components/pages/auth/login/Login.vue';
 const routes = new VueRouter({
     mode: 'history',
     linkExactActiveClass: 'active',
@@ -52,8 +52,8 @@ const routes = new VueRouter({
             name: 'proEdit',
         },
         {
-            path: '/auth/login',
-            component: login,
+            path: '/login',
+            component: Login,
             name: 'login',
         },
         {

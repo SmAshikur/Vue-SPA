@@ -37,7 +37,11 @@
         methods: {
             logout(){
                 axios.post('/logout').then(response =>{
-                    console.log('success');
+                    this.$router.push({name: 'login'});
+                     this.$toast.success({
+                        title:'Success!',
+                       message:'Log out successfully.'
+                    })
                 })
             }
         },
