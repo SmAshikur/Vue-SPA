@@ -53,8 +53,8 @@ import axios from 'axios';
             }
         },
         methods: {
-            createCategory(){
-                axios.get('/sanctum/csrf-cookie').then(response => {
+           async createCategory(){
+               axios.get('/sanctum/csrf-cookie').then(response => {
                     this.categoryForm.post('/login').then(response =>{
                         this.getdata();
                          this.$toast.success({
