@@ -8,31 +8,23 @@
 
                     </div>
 
-                           <div class="card-body">
-                        <div class="row">
-                            <div class="col-6 offset-3">
-                                <form @submit.prevent="createCategory">
+                          <div class="card-body">
+                                <form action="" method="post" @submit.prevent="login()">
                                     <div class="form-group">
-                                        <label for="">Login Email</label>
-                                        <input type="text" v-model="categoryForm.email" class="form-control"
-                                         placeholder="login email"
-                                        :class="{ 'is-invalid': categoryForm.errors.has('email') }">
-                                        <has-error :form="categoryForm" field="email"></has-error>
+                                        <label for="">Email</label>
+                                        <input type="text" v-model="loginForm.email" class="form-control" placeholder="email" :class="{ 'is-invalid': loginForm.errors.has('email') }">
+                                        <has-error :form="loginForm" field="email"></has-error>
                                     </div>
                                     <div class="form-group">
-                                        <label for="">Login password</label>
-                                        <input type="text" v-model="categoryForm.password" class="form-control"
-                                          placeholder="login password"
-                                        :class="{ 'is-invalid': categoryForm.errors.has('password') }">
-                                        <has-error :form="categoryForm" field="password"></has-error>
+                                        <label for="">Password</label>
+                                        <input type="password" v-model="loginForm.password" class="form-control" placeholder="password" :class="{ 'is-invalid': loginForm.errors.has('password') }" >
+                                        <has-error :form="loginForm" field="password"></has-error>
                                     </div>
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-success">Log in</button>
+                                        <button type="submit" :disabled="loginForm.busy" class="btn btn-success px-4">Login</button>
                                     </div>
                                 </form>
                             </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -40,47 +32,42 @@
 </template>
 
 <script>
-    import { Form } from 'vform'
-import dashboardVue from '../../dashboard/dashboard.vue';
-import axios from 'axios';
-    export default {
-        data(){
-            return {
-                categoryForm: new Form({
-                    email: 'admin@gmail.com',
-                    password: '123demo',
-                }),
-            }
-        },
-        methods: {
-           async createCategory(){
-               axios.get('/sanctum/csrf-cookie').then(response => {
-                    this.categoryForm.post('/login').then(response =>{
-                        this.getdata();
-                         this.$toast.success({
-                        title:'Success!',
-                       message:'Log in successfully.'
-                    });
-                    this.$router.push({name: 'dashboard'});
-                    })
-                });
-            },
-            getdata(){
-                axios.get('/api/user').then(response =>{
-                       let user = response.data;
-                        this.$store.commit('SET_USER', user);
-                        this.$store.commit('SET_AUTHENTICATED', true);
-                        localStorage.setItem("auth", true);
-                })
-            }
+import { Form } from 'vform'
+export default {
+    data(){
+        return {
+            loginForm: new Form({
+                email: '',
+                password: '',
+            }),
+        }
+    },
+    methods: {
+        async login(){
+            await axios.get('/sanctum/csrf-cookie')
+            await this.loginForm.post('/login')
+            await this.getUserData();
+            this.$toast.success({
+                title:'Success!',
+                message:'Welcome, Dear!'
+            });
 
+            this.$router.push({ name: 'dashboard' });
         },
-        mounted() {
+        async getUserData(){
+            await axios.get('/api/user').then(response => {
+                let user = response.data;
+                this.$store.commit('SET_USER', user);
+                this.$store.commit('SET_AUTHENTICATED', true);
+                localStorage.setItem("auth", true);
+            });
+        }
+    },
+    mounted(){
 
-        },
     }
+}
 </script>
-
 
 <style>
 

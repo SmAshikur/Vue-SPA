@@ -28,9 +28,9 @@
                     <li class="nav-item"   v-if="!auth" >
                         <router-link class="nav-link" :to="{name:'login'}" >Log In </router-link>
                     </li>
-
-
-
+                    <li class="nav-item"  >
+                        <router-link class="nav-link" :to="{name:'signup'}" >signup </router-link>
+                    </li>
                 </ul>
 
             </div>

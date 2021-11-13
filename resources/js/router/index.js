@@ -13,6 +13,7 @@ import proEdit from '../components/pages/product/proEdit';
 import dashboard from '../components/pages/dashboard/dashboard';
 import Login from '../components/pages/auth/login/Login.vue';
 import profile from '../components/pages/dashboard/profile.vue';
+import SignupVue from '../components/pages/auth/login/Signup.vue';
 const routes = new VueRouter({
     mode: 'history',
     linkExactActiveClass: 'active',
@@ -78,6 +79,14 @@ const routes = new VueRouter({
             name: 'profile',
             meta: {
                 requiresAuth: true,
+            }
+        },
+        {
+            path: '/signup',
+            component: SignupVue,
+            name: 'signup',
+            meta: {
+                requiresVisitor: true,
             }
         },
         ]
