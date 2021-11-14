@@ -9,8 +9,8 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto"  >
-                    <li class="nav-item active">
+                <ul class="navbar-nav ml-auto"  v-if="auth" >
+                    <li class="nav-item ">
                         <router-link class="nav-link" :to="{name:'home'}">Home </router-link>
                     </li>
                     <li class="nav-item">
@@ -19,16 +19,18 @@
                     <li class="nav-item">
                         <router-link class="nav-link" :to="{name:'proIn'}">Product </router-link>
                     </li>
-                    <li class="nav-item "  v-if="auth"   >
+                    <li class="nav-item "    >
                         <router-link class="nav-link" :to="{name:'dashboard'}" >Dashboard </router-link>
                     </li>
                     <li class="nav-item"  v-if="auth" >
                         <a href="#" class="nav-link" @click.prevent="logout()">Log out </a>
                     </li>
+                </ul>
+                 <ul class="navbar-nav ml-auto"  v-if="!auth" >
                     <li class="nav-item"   v-if="!auth" >
                         <router-link class="nav-link" :to="{name:'login'}" >Log In </router-link>
                     </li>
-                    <li class="nav-item"  >
+                    <li class="nav-item" v-if="!auth" >
                         <router-link class="nav-link" :to="{name:'signup'}" >signup </router-link>
                     </li>
                 </ul>

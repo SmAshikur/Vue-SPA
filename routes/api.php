@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use PharIo\Manifest\AuthorCollection;
-
+use App\Http\Controllers\PublicAPIController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,7 +23,11 @@ Route::middleware('auth:sanctum')->group(function(){
     return $request->user();
   });
   Route::post('/user',[AuthController::class,'update_user']);
+  Route::resource('/category',CategoryController::class);
+  Route::resource('/product',ProductController::class);
+
 });
 
-Route::resource('/category',CategoryController::class);
-Route::resource('/product',ProductController::class);
+Route::get('/data',[PublicAPIController::class,'products']);
+
+

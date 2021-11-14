@@ -32,7 +32,7 @@
 
  <script>
   import { Form } from 'vform'
-export default {
+        export default {
     data(){
         return {
             signupForm: new Form({
