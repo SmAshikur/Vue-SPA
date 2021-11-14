@@ -19,6 +19,15 @@
                                         <has-error :form="productForm" field="title"></has-error>
                                     </div>
                                     <div class="form-group">
+                                        <label for="">Category</label>
+                                       <select name="category_id" class="form-control" v-model="productForm.category_id" :class="{ 'is-invalid': productForm.errors.has('category_id') }">
+                                            <option style="display:none;" value="" selected>Select Category</option>
+                                            <option :value="category.id" v-for="category in categories" :key="category.id"> {{
+                                                category.name }}</option>
+                                        </select>
+                                        <has-error :form="productForm" field="category_id"></has-error>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="">Product Price</label>
                                         <input type="number" v-model="productForm.price" class="form-control" name="price" placeholder="product price"
                                          :class="{ 'is-invalid': productForm.errors.has('price') }">
@@ -60,7 +69,9 @@
                 price: '',
                 image: '',
                 description: '',
+                category_id:'',
             }),
+            categories:[]
             }
         },
         methods: {
@@ -89,7 +100,15 @@
             // Do some client side validation...
             this.productForm.image = file
         },
+        loadCategories(){
+            axios.get('/api/category').then(response => {
+                this.categories = response.data;
+            });
         }
+        },
+         mounted(){
+        this.loadCategories();
+    }
     }
 </script>
 

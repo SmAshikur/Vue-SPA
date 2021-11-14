@@ -15,7 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $pro=Product::get();
+        $pro=Product::with('category')->latest()->get();
         return response()->json($pro,200);
     }
 
@@ -40,13 +40,15 @@ class ProductController extends Controller
         $this->validate($request,[
             'title'=>'required',
             'price'=>'required|numeric',
+            'category_id' => 'required',
 
         ]);
         $product=Product::create([
             'title'=>$request->title,
             'slug'=>Str::slug($request->title),
             'price'=>$request->price,
-            'description'=>$request->description
+            'description'=>$request->description,
+            'category_id' => $request->category_id,
 
         ]);
 
@@ -101,6 +103,7 @@ class ProductController extends Controller
             'price' => 'required|integer',
             'image' => 'sometimes|nullable|image|max:2048',
             'description' => 'required',
+            'category_id' => 'required',
         ]);
 
         $product->update([
@@ -108,6 +111,7 @@ class ProductController extends Controller
             'slug' => Str::slug($request->title),
             'price' => $request->price,
             'description' => $request->description,
+            'category_id' => $request->category_id,
         ]);
 
         if ($request->image) {

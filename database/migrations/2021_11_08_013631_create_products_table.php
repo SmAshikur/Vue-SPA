@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->string('image')->nullable();
             $table->string('description')->nullable();
             $table->timestamps();
+            $table->integer('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 

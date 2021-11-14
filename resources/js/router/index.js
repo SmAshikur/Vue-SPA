@@ -14,6 +14,7 @@ import dashboard from '../components/pages/dashboard/dashboard';
 import Login from '../components/pages/auth/login/Login.vue';
 import profile from '../components/pages/dashboard/profile.vue';
 import SignupVue from '../components/pages/auth/login/Signup.vue';
+import pageDetails from '../components/pages/pageDetails.vue';
 const routes = new VueRouter({
     mode: 'history',
     linkExactActiveClass: 'active',
@@ -88,6 +89,11 @@ const routes = new VueRouter({
             meta: {
                 requiresVisitor: true,
             }
+        },
+        {
+            path:  '/product/:slug',
+            component:pageDetails,
+            name: 'proDetails',
         },
         ]
 });

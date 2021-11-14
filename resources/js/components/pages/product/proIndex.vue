@@ -14,6 +14,7 @@
                                 <tr>
                                     <th style="width:100px">Id</th>
                                     <th>Product Name</th>
+                                    <th>category</th>
                                     <th>Product Name</th>
                                     <th>Product Slug</th>
                                     <th style="width:200px">Action</th>
@@ -27,6 +28,7 @@
                                             <img :src="product.image" class="img-fluid">
                                         </div>
                                     </td>
+                                    <td>{{product.category.name}}</td>
                                     <td>{{product.title}}</td>
                                     <td>{{product.slug}}</td>
                                 <td style="width:200px">

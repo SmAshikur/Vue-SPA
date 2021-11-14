@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function(){
 
 });
 
-Route::get('/data',[PublicAPIController::class,'products']);
+Route::get('/products',[PublicAPIController::class,'products']);
+Route::get('/products/{slug}',[PublicAPIController::class,'product_details']);
 
 
