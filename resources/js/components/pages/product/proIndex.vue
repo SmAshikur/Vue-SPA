@@ -21,7 +21,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <tr v-for=" product in pro" :key="product.id">
+                            <tr v-for=" product in pro.data" :key="product.id">
                                     <td style="width:100px">{{product.id}}</td>
                                     <td>
                                         <div style="max-width: 150px; max-height: 150px">
@@ -39,6 +39,10 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <div class="card-footer d-flex justify-content-center align-items-center my-5 py-2">
+                        <pagination :data="pro" @pagination-change-page="getCat"></pagination>
+                    </div>
                 </div>
             </div>
         </div>
@@ -54,9 +58,10 @@
                 }
         },
         methods:{
-                getCat(){
-                    axios.get('/api/product').then(response =>{
+                getCat(page){
+                    axios.get('/api/product?page='+page).then(response =>{
                         this.pro=response.data;
+                        console.log(response)
                     })
                 },
                  async deleteProduct(product){

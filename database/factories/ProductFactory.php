@@ -19,7 +19,7 @@ class ProductFactory extends Factory
     {
         $title = $this->faker->sentence(8);
         $slug = Str::slug($title);
-        $number = rand(1,100);
+        $number = rand(1,1000);
 
 
         return [

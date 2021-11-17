@@ -10,7 +10,7 @@ class PublicAPIController extends Controller
     public function products()
     {
        //$pro=Product::latest()->paginate(16);
-        $products=Product::with('category')->get();
+        $products=Product::with('category')->paginate(24);
         return response()->json($products,200);
     }
     public function product_details($slug)

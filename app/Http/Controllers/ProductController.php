@@ -15,7 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $pro=Product::with('category')->latest()->get();
+        $pro=Product::with('category')->latest()->paginate(18);
         return response()->json($pro,200);
     }
 

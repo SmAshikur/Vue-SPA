@@ -3,8 +3,9 @@
           <div class="container py-5">
         <h2>Our Products</h2>
         <div class="row"  >
-            <div class="col-3 mb-3" v-for="product in pro" :key="product.id">
+            <div class="col-3 mb-3" v-for="product in pro.data" :key="product.id">
                 <div class="card">
+                    <h1>{{product.id}}</h1>
                     <img :src="product.image" class="card-img-top" style="height: 150px; object-fit: cover; overflow: hidden" alt="...">
                     <div class="card-body">
                         <div class="mb-2 d-flex justify-content-between">
@@ -20,9 +21,17 @@
             </div>
         </div>
 
-    </div>
- 
-     </div>
+
+        <div class="text-center mt-5" v-if="apiCallLoaded">
+            <button class="btn btn-primary" :disabled="!next_page_url" @click.prevent="loadMoreProducts(next_page_url)">Load Next Products</button>
+        </div>
+        </div>
+
+ <div class="card-footer d-flex justify-content-center align-items-center my-5 py-2">
+                        <pagination :data="pro" @pagination-change-page="getCat"></pagination>
+                    </div>
+        </div>
+
  </template>
 
  <script>
@@ -32,7 +41,9 @@
 
      data() {
          return {
-           pro:[]
+           pro:[],
+           next_page_url:null,
+ apiCallLoaded: false,
          };
      },
 
@@ -41,9 +52,19 @@
      },
 
      methods: {
-            getCat(){
-                    axios.get('/api/products').then(response =>{
+            getCat(page){
+                    axios.get('/api/products?page='+(page)).then(response =>{
                         this.pro=response.data;
+                        this.next_page_url=response.data.next_page_url;
+                        this.apiCallLoaded = true;
+                    })
+                },
+         loadMoreProducts(url){
+                    axios.get(url).then(response =>{
+                      //  console.log(response.data)
+                        this.pro=response.data;
+                        this.next_page_url=response.data.next_page_url;
+
                     })
                 },
      },
